@@ -156,6 +156,14 @@ footer{text-align:center;padding:20px;color:#64748b;font-size:13px;margin-top:30
 <div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-10-26 升级 · 【数据+2026-10-26】数据=数字/文字/图像/声音/视频；大数据 4 特点=量大/多样/高速/价值密度低</div>
 
 <div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-10-27 升级 · 【编程+2026-10-27】异常处理 try-except：捕获错误不崩溃；break 跳出循环</div>
+
+<div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-11-02 升级 · 【存储+2026-11-02】内存(RAM)断电丢失，硬盘(ROM/U 盘等)断电不丢；缓存速度最快</div>
+
+<div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-11-03 升级 · 【网络+2026-11-03】路由器拨号给 IP；WiFi 密码加密(WPA2)防窃听</div>
+
+<div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-11-06 升级 · 【数据+2026-11-06】SQL：SELECT...WHERE...ORDER BY；主键唯一非空，外键保参照完整</div>
+
+<div style="background:#fffbe6;border-left:4px solid #f5a623;padding:10px;margin:12px 0;font-size:14px">📅 2026-11-12 升级 · 【编程+2026-11-12】列表推导 [x*2 for x in lst if x>0]；嵌套过深可读性差</div>
 </footer>
 
 <script>
@@ -314,31 +322,41 @@ function modelCheck(){
 </script>
 
 <div id="agent-panel" style="margin:20px auto;max-width:720px;border:2px solid #4a90d9;border-radius:12px;padding:16px;background:#f7fbff;font-family:system-ui">
-  <h3 style="margin:0 0 8px;color:#2c5d8f">🤖 码智君·信息科技专家团 · 智能体问答</h3>
-  <p style="font-size:13px;color:#555;margin:0 0 10px">点预设或直接输入问题（在线时）。无密钥时自动降级为"离线题库模式"，双击 file:// 零报错。</p>
+  <h3 style="margin:0 0 8px;color:#2c5d8f">🤖 码智君·信息科技专家团 · 智能体问答（本地题库模式）</h3>
+  <p style="font-size:13px;color:#555;margin:0 0 10px">本地题库模式（离线·零外链）：关键词匹配本站本地题库作答。在线 AI 问答待李老师定 key 策略后统一开通。</p>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><button style="padding:6px 10px;border-radius:8px;border:1px solid #888;background:#fff;color:#333;cursor:pointer;font-size:12px" onclick="agentAsk('递归求阶乘代码+终止条件')">递归求阶乘代码+终止条件</button><button style="padding:6px 10px;border-radius:8px;border:1px solid #888;background:#fff;color:#333;cursor:pointer;font-size:12px" onclick="agentAsk('二进制/十六进制互转')">二进制/十六进制互转</button><button style="padding:6px 10px;border-radius:8px;border:1px solid #888;background:#fff;color:#333;cursor:pointer;font-size:12px" onclick="agentAsk('一道信息科技编程题')">一道信息科技编程题</button>
-    <button style="padding:6px 12px;border-radius:8px;border:1px solid #4a90d9;background:#4a90d9;color:#fff;cursor:pointer;font-size:12px" onclick="agentAsk('')">问 码智君·信息科技专家团</button>
+    <button style="padding:6px 12px;border-radius:8px;border:1px solid #4a90d9;background:#4a90d9;color:#fff;cursor:pointer" onclick="agentAsk('')">问 码智君·信息科技专家团</button>
   </div>
-  <textarea id="agent-q" placeholder="输入问题，点按钮问 码智君·信息科技专家团..." style="width:100%;height:60px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px"></textarea>
-  <button style="margin-top:8px;padding:8px 16px;border-radius:8px;border:none;background:#2c8a3d;color:#fff;cursor:pointer;font-size:14px" onclick="agentAsk(document.getElementById('agent-q').value)">提问</button>
+  <textarea id="agent-q" placeholder="输入问题，匹配 码智君·信息科技专家团 本地题库..." style="width:100%;height:60px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px;box-sizing:border-box"></textarea>
+  <button style="margin-top:8px;padding:8px 16px;border-radius:8px;border:none;background:#2c8a3d;color:#fff;cursor:pointer;font-size:14px" onclick="agentAsk(document.getElementById('agent-q').value)">匹配本地题库</button>
   <div id="agent-a" style="margin-top:12px;padding:12px;background:#fff;border-left:4px solid #2c8a3d;border-radius:6px;font-size:14px;min-height:40px;white-space:pre-wrap;color:#333">（等待回答）</div>
   <script>
-  /* 安全写法: 密钥为空 = 离线题库模式, 双击 file:// 零报错 */
-  var AGENT_API = {base:"https://api.agnes-k2.com/v1", key:"", model:"agnes-flash"};
+  // 本地题库模式: 离线·零外链·无 key。在线(key 注入)待李老师定 key 策略后统一切, 此处 AGENT_MODE 为切换点。
+  var AGENT_MODE="local";
+  var AGENT_KB=(typeof window.AGENT_KB==="object"&&window.AGENT_KB)?window.AGENT_KB:[];
+  var LOCAL_TIPS=["编程先写伪代码(大白话算法)再翻译; 查终止条件与 0/1/空边界。", "数据结构先估时间复杂度再选; 用极小例子手算验证。"];
+  function _kbTokens(q){
+    var t=[];
+    (q.toLowerCase().match(/[a-z0-9]+/g)||[]).forEach(function(x){t.push(x);});
+    q.replace(/[^\u4e00-\u9fff]/g,'').split('').forEach(function(c){t.push(c);});
+    return t;
+  }
   function agentAsk(q){
-    if(!q) q=document.getElementById('agent-q').value;
+    if(!q)q=document.getElementById('agent-q').value;
     if(!q){document.getElementById('agent-a').textContent='请输入问题';return;}
+    document.getElementById('agent-q').value=q;
     var a=document.getElementById('agent-a');
-    if(!AGENT_API.key){
-      a.textContent='⚠ 当前未配置在线 AI 密钥，离线题库模式：请用页面上方「代码判读/伪代码/算法基础」题库自练；在线功能待部署时注入密钥后自动启用。';
-      return;
+    var uniq=Array.from(new Set(_kbTokens(q)));
+    var hits=AGENT_KB.map(function(it){
+      var hay=((it.q||"")+" "+(it.a||"")).toLowerCase();
+      var n=uniq.filter(function(t){return hay.indexOf(t)>-1;}).length;
+      return {s:n,it:it};
+    }).filter(function(x){return x.s>=Math.min(uniq.length,2);}).sort(function(x,y){return y.s-x.s;}).slice(0,3);
+    if(hits.length){
+      a.textContent="\u{1F4D6} 本地题库 · 离线（码智君·信息科技专家团 本地条目）\n\n"+hits.map(function(h){return "Q: "+h.it.q+"\nA: "+h.it.a;}).join("\n\n")+"\n\n（在线 AI 问答待李老师定 key 策略后开通）";
+    } else {
+      a.textContent="\u26A0\uFE0F 本地题库模式（离线）：未匹配到本地条目。在线 AI 问答待李老师定 key 策略后开通。\n学习提示：\n- "+LOCAL_TIPS.join("\n- ")+"\n并见站内【题库/知识】模块。";
     }
-    a.textContent='⏳ 码智君·信息科技专家团 思考中...';
-    fetch(AGENT_API.base+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+AGENT_API.key},
-      body:JSON.stringify({model:AGENT_API.model,messages:[{role:'system',content:'你是码智君·信息科技专家团，信息科技编程8席。回答要专业、准确、可核查，口语化带大白话。'},{role:'user',content:q}],temperature:0.3})
-    }).then(function(r){return r.json();}).then(function(d){
-      a.textContent=(d.choices&&d.choices[0]&&d.choices[0].message)?d.choices[0].message.content:'（无返回）';
-    }).catch(function(e){a.textContent='⚠ 在线 AI 暂不可用('+e.message+')，看站内题库或稍后再试。';});
   }
   </script>
 </div>
